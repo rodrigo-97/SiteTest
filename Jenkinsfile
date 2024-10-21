@@ -1,20 +1,30 @@
 pipeline {
-    agent { label 'Docker' } // Use a label para definir o agente
-
+    agent any
     stages {
-        stage('Build') {
+        stage('Clone Repo') {
+            steps {
+                git branch: 'master', url: 'https://github.com/rodrigo-97/SiteTest.git'
+            }
+        }
+        stage('Stop Existing Container') {
             steps {
                 script {
-                    // Execute seu comando Docker aqui
-                    sh 'docker build -t app-test .' 
+                    sh 'docker stop app-test || true'
+                    sh 'docker rm app-test || true'
                 }
             }
         }
-        stage('Run') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    // Comando para rodar seu container
-                    sh 'docker run app-test'
+                    sh 'docker build -t app-test .'
+                }
+            }
+        }
+        stage('Run New Container') {
+            steps {
+                script {
+                    sh 'docker run -d -p 3333:80 app-test'
                 }
             }
         }
