@@ -2,7 +2,7 @@ pipeline {
     agent any 
 
     tools {
-        nodejs 'NodeJS 14' // Nome da instalação do NodeJS que você configurou
+        nodejs 'NodeJS_20.12.1' // Nome da instalação do NodeJS que você configurou
     }
 
     stages {
