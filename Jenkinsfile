@@ -1,17 +1,20 @@
 pipeline {
-    agent "Docker"
+    agent { label 'Docker' } // Use a label para definir o agente
+
     stages {
-       stage('Build') {
+        stage('Build') {
             steps {
                 script {
-                    sh 'docker build -t app-test .' // Execute seu comando Docker aqui
+                    // Execute seu comando Docker aqui
+                    sh 'docker build -t app-test .' 
                 }
             }
         }
         stage('Run') {
             steps {
                 script {
-                    sh 'docker run app-test' // Comando para rodar seu container
+                    // Comando para rodar seu container
+                    sh 'docker run app-test'
                 }
             }
         }
