@@ -1,15 +1,7 @@
 pipeline {
-    agent any
+    agent "Docker"
     stages {
-        stage('Initialize') {
-            steps {
-                script {
-                    def dockerHome = tool 'Docker' // Nome que você deu na configuração
-                    env.PATH = "${dockerHome}/bin:${env.PATH}" // Atualiza o PATH
-                }
-            }
-        }
-        stage('Build') {
+       stage('Build') {
             steps {
                 script {
                     sh 'docker build -t app-test .' // Execute seu comando Docker aqui
