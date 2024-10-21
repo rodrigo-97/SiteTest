@@ -1,37 +1,42 @@
 pipeline {
-    agent any 
+    agent any
 
-    tools {
-        nodejs 'NodeJS_20.12.1' // Nome da instalação do NodeJS que você configurou
+    environment {
+        IMAGE_NAME = 'SIMPLE_SERVER'
+        IMAGE_TAG = 'latest'
     }
 
     stages {
-        stage('Checkout') {
+        stage('Build Docker Image') {
             steps {
-                echo 'INSTALANDO DEPENDÊNCIAS'
-                git 'https://github.com/rodrigo-97/SiteTest.git'
-            }
-        }
-        
-        stage('Install Dependencies') {
-            steps {
-                echo 'INSTALANDO DEPENDÊNCIAS'
-                sh 'npm install'
+                script {
+                    sh '''
+                    docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
+                    '''
+                }
             }
         }
 
-        stage('Run Server') {
+        stage('Deploy Docker Container') {
             steps {
-                echo 'EXECUTANDO O SERVIDOR'
-                sh 'npx serve' 
+                script {
+                    sh '''
+                    docker run -d --name simple-server -p 3000:80 ${IMAGE_NAME}:${IMAGE_TAG}
+                    '''
+                }
             }
         }
     }
 
     post {
         always {
-            echo 'LIMPANDO WORKSPACE'
-            cleanWs()
+            echo 'Pipeline finalizada'
+        }
+        success {
+            echo 'Aplicação deployada com sucesso!'
+        }
+        failure {
+            echo 'Falha no deploy!'
         }
     }
 }
