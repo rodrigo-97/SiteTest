@@ -1,32 +1,23 @@
 pipeline {
     agent any
-
+    tools {
+        nodejs 'NodeJS'
+    }
     stages {
-        stage('Preparação') {
+        stage('Checkout') {
             steps {
-                sh 'echo CLONANDO PROJETO'
-                git 'https://github.com/rodrigo-97/SiteTest.git'
+                checkout scm
             }
         }
-
-        stage('Instalação') {
+        stage('Install Dependencies') {
             steps {
-                sh 'echo INSTALANDO DEPENDÊNCIAS'
                 sh 'npm install'
             }
         }
-
-        stage('Executar Servidor') {
+        stage('Run Server') {
             steps {
-                sh 'echo SUBINDO NA PORTA 3000'
-                sh 'npx serve -l 3000'
+                sh 'npm start'
             }
-        }
-    }
-
-    post {
-        always {
-            cleanWs()
         }
     }
 }
