@@ -1,23 +1,39 @@
 pipeline {
-    agent any
+    agent any 
+
     tools {
-        nodejs 'nodejs'
+        nodejs 'NodeJS 14' // Nome da instalação do NodeJS que você configurou
     }
+
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                // Clonando o repositório
+                git 'https://github.com/rodrigo-97/SiteTest.git'
             }
         }
+        
         stage('Install Dependencies') {
             steps {
+                echo 'INSTALANDO DEPENDÊNCIAS'
+                // Instala as dependências usando npm
                 sh 'npm install'
             }
         }
+
         stage('Run Server') {
             steps {
-                sh 'npm start'
+                echo 'EXECUTANDO O SERVIDOR'
+                // Execute seu servidor aqui
+                sh 'npm start' // ou qualquer comando que você usa para iniciar o servidor
             }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning workspace...'
+            cleanWs() // Limpa o workspace após a execução
         }
     }
 }
