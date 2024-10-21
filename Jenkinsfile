@@ -1,6 +1,7 @@
 pipeline {
-    agent any
-
+    agent {
+        label 'Docker'
+    }
     stages {
         stage('Build') {
             steps {
@@ -9,10 +10,10 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
+        stage('Run') {
             steps {
                 script {
-                    sh 'docker run -d -p 3000:80 app-test'
+                    sh 'docker run app-test'
                 }
             }
         }
