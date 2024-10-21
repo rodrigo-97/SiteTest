@@ -1,9 +1,5 @@
-FROM node:20.10.0-alpine
+FROM nginx:alpine
 
-WORKDIR /app
+EXPOSE 80
 
-COPY . .
-
-RUN npm install
-
-CMD ["node", "index.js"]
+CMD ["nginx", "-g", "daemon off;"]
