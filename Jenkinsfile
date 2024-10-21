@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Clonando o repositório
+                echo 'INSTALANDO DEPENDÊNCIAS'
                 git 'https://github.com/rodrigo-97/SiteTest.git'
             }
         }
@@ -16,7 +16,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'INSTALANDO DEPENDÊNCIAS'
-                // Instala as dependências usando npm
                 sh 'npm install'
             }
         }
@@ -24,16 +23,15 @@ pipeline {
         stage('Run Server') {
             steps {
                 echo 'EXECUTANDO O SERVIDOR'
-                // Execute seu servidor aqui
-                sh 'npm start' // ou qualquer comando que você usa para iniciar o servidor
+                sh 'npx serve' 
             }
         }
     }
 
     post {
         always {
-            echo 'Cleaning workspace...'
-            cleanWs() // Limpa o workspace após a execução
+            echo 'LIMPANDO WORKSPACE'
+            cleanWs()
         }
     }
 }
